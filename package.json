@@ -8,7 +8,13 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue": "^2.5.17"
+    "element-ui": "^2.4.11",
+    "html2canvas": "^1.0.0-alpha.12",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.2",
+    "vue-store": "^0.3.1-moved",
+    "vue-video-player": "^5.0.2",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.4",
