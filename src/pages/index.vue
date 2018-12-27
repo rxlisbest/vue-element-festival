@@ -23,7 +23,7 @@
         </video-player>
       </div>
     </transition>
-    <el-main v-if="!videoDisplay">
+    <el-main v-if="formDisplay">
       <el-row>
         <el-col :span="2" :offset="2">
           <span class="label">祝</span>
@@ -82,6 +82,7 @@
           from: ''
         },
         videoDisplay: false,
+        formDisplay: false,
         playerOptions: {
           // videojs options
           autoplay: true,
@@ -89,11 +90,14 @@
           muted: true,
           language: 'en',
           playbackRates: [0.7, 1.0, 1.5, 2.0],
+          preload: true,
+          fluid: false,
+          height: 100,
           sources: [{
             type: "video/mp4",
-            src: "http://soocoss.soocedu.com/20181222_qn5c1da9a153e7c.mp4"
+            src: "http://pkebexqkn.bkt.clouddn.com/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.mp4"
           }],
-          poster: "/static/images/author.jpg",
+          poster: "",
           controlBar: false,
         }
       }
@@ -112,12 +116,14 @@
       },
       onPlayerEnded(playerCurrentState) {
         this.videoDisplay = false
+        this.formDisplay = true
       },
       onPlayerWaiting(player) {
       },
       onPlayerPlaying(player) {
       },
       onPlayerLoadeddata(player) {
+        this.videoDisplay = true
       },
       onPlayerTimeupdate(player) {
       },
@@ -128,9 +134,19 @@
       playerStateChanged(player) {
       },
       playerReadied() {
-        this.videoDisplay = true
+        let that = this
+        if (Object.keys(this.$store.state.bless).length == 0) {
+          this.$refs.videoPlayer.player.play()
+          document.addEventListener("WeixinJSBridgeReady", function () {
+            that.$refs.videoPlayer.player.play()
+          }, false);
+        }
       },
       preview () {
+        if (!this.form.from || (!this.form.inputA && !this.form.inputB) || !this.form.to) {
+          this.$message.error('信息未填写完整')
+          return false
+        }
         this.$store.state.bless = this.form
         this.$router.push({name: 'preview'})
       }
@@ -139,6 +155,9 @@
 </script>
 
 <style>
+  video {
+    object-fit: fill;
+  }
   .el-row-button {
     margin-top: 16px;
   }
