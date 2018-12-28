@@ -2,29 +2,16 @@
   <el-container class="canvas">
     <transition name="el-fade-in-linear">
       <div v-show="videoDisplay" class="transition-box">
-        <!-- <video-player class="video-player-box"
-                     ref="videoPlayer"
-                     :options="playerOptions"
-                     :playsinline="true"
-                     customEventName="customstatechangedeventname"
-     
-                     @play="onPlayerPlay($event)"
-                     @pause="onPlayerPause($event)"
-                     @ended="onPlayerEnded($event)"
-                     @waiting="onPlayerWaiting($event)"
-                     @playing="onPlayerPlaying($event)"
-                     @loadeddata="onPlayerLoadeddata($event)"
-                     @timeupdate="onPlayerTimeupdate($event)"
-                     @canplay="onPlayerCanplay($event)"
-                     @canplaythrough="onPlayerCanplaythrough($event)"
-     
-                     @statechanged="playerStateChanged($event)"
-                     @ready="playerReadied">
-        </video-player> -->
+        <video id="video" autoplay x5-playsinline="true" webkit-playsinline="true" playsinline="true">
+          <source src="http://pkebexqkn.bkt.clouddn.com/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.mp4" type="video/mp4">
+          您的浏览器不支持 video 标签。
+        </video>
       </div>
     </transition>
     <el-main v-if="formDisplay">
-      <div style="height: 52%; width: 100%;"></div>
+      <div style="height: 53%; width: 100%;">
+        <!-- <d-player @play="play" ref="player"></d-player> -->
+      </div>
       <el-row>
         <el-col :span="2" :offset="6">
           <span class="label">祝</span>
@@ -61,17 +48,14 @@
   import {
     Container
   } from 'element-ui'
-  import 'video.js/dist/video-js.css'
-  // import { videoPlayer } from 'vue-video-player'
-  // import 'videojs-contrib-hls.js/src/videojs.hlsjs'
-
+  import VueDPlayer from 'vue-dplayer'
   import html2canvas from 'html2canvas';
 
   export default {
     name: 'index',
     components: {
       Container,
-      // videoPlayer
+      'd-player': VueDPlayer
     },
     data () {
       return {
@@ -83,24 +67,31 @@
         },
         videoDisplay: false,
         formDisplay: false,
-        playerOptions: {
-          // videojs options
-          autoplay: false,
-          liveui: false,
-          muted: true,
-          language: 'en',
-          playbackRates: [0.7, 1.0, 1.5, 2.0],
-          preload: true,
-          fluid: false,
-          height: 100,
-          sources: [{
-            type: "application/x-mpegURL",
-            src: "http://pkebexqkn.bkt.clouddn.com/5bb420f8bdcac.m3u8"
-          }],
-          poster: "",
-          controlBar: false
-        }
+        video: {
+         url: 'http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4',
+         pic: '',
+         type: 'mp4'
+        },
       }
+    },
+    mounted () {
+      let that = this
+      that.videoDisplay = true
+
+      let video = document.getElementById('video');
+
+      //使用事件监听方式捕捉事件
+      video.addEventListener("loaded", function(){
+        video.play()
+      }, false);
+      document.addEventListener("WeixinJSBridgeReady", function () {
+        video.play()
+      }, false);
+      //使用事件监听方式捕捉事件
+      video.addEventListener("ended", function(){
+        that.videoDisplay = false
+        that.formDisplay = true
+      }, false);
     },
     created () {
       if (Object.keys(this.$store.state.bless).length == 0) {
@@ -108,49 +99,13 @@
       } else {
         this.form = this.$store.state.bless
       }
-      this.videoDisplay = false
-      this.formDisplay = true
+      this.videoDisplay = true
+      // this.videoDisplay = false
+      // this.formDisplay = true
     },
     methods: {
-      onPlayerPlay(player) {
-      },
-      onPlayerPause(player) {
-      },
-      onPlayerEnded(playerCurrentState) {
-        // this.videoDisplay = false
-        // this.formDisplay = true
-      },
-      onPlayerWaiting(player) {
-      },
-      onPlayerPlaying(player) {
-      },
-      onPlayerLoadeddata(player) {
-        if (Object.keys(this.$store.state.bless).length == 0) {
-          // this.videoDisplay = true
-        } else {
-          this.formDisplay = true
-        }
-      },
-      onPlayerTimeupdate(player) {
-      },
-      onPlayerCanplay(player) {
-      },
-      onPlayerCanplaythrough(player) {
-      },
-      playerStateChanged(player) {
-      },
-      playerReadied() {
-        // let that = this
-        // if (Object.keys(this.$store.state.bless).length == 0) {
-        //   this.$refs.videoPlayer.player.load()
-        //   this.$refs.videoPlayer.player.play()
-        //   document.addEventListener("WeixinJSBridgeReady", function () {
-        //     that.$refs.videoPlayer.player.load()
-        //     that.$refs.videoPlayer.player.play()
-        //     WeixinJSBridge.call('hideToolbar');
-        //     WeixinJSBridge.call('hideOptionMenu');
-        //   }, false);
-        // }
+      play() {
+        console.log('play callback')
       },
       preview () {
         if (!this.form.from || (!this.form.inputA && !this.form.inputB) || !this.form.to) {
@@ -167,6 +122,10 @@
 <style>
   .el-input-transparent-right input {
     text-align: right;
+  }
+  #video {
+    width: 100%;
+    height: 100%;
   }
   video {
     object-fit: fill;
