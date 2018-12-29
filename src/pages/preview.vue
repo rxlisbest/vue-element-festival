@@ -64,9 +64,18 @@
       }
     },
     created () {
-      this.imgWidth = document.body.scrollWidth
-      this.imgHeight = document.body.scrollHeight - 5
-      this.imgDisplay = true
+      let that = this
+      that.imgWidth = document.body.scrollWidth
+      that.imgHeight = document.body.scrollHeight - 5
+      that.imgDisplay = true
+      window.addEventListener("resize", function () {
+        that.imgDisplay = false
+        // 得到屏幕尺寸 (内部/外部宽度，内部/外部高度)
+        that.imgWidth = document.body.scrollWidth
+        that.imgHeight = document.body.scrollHeight - 5
+        that.imgDisplay = true
+      }, false);
+
       console.log(document.body.clientWidth)
       console.log(document.body.clientHeight)
       if (Object.keys(this.$store.state.bless).length == 0) {
@@ -89,8 +98,24 @@
           //     let r = type.match(/png|jpeg|bmp|gif/)[0];
           //     return 'image/' + r;
           // };
-          that.$store.state.image = imgData
-          that.$router.replace({name: 'image'})
+          function getBase64Image(img) {
+            var canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            var dataURL = canvas.toDataURL("image/png");
+            return dataURL // return dataURL.replace("data:image/png;base64,", ""); 
+          } 
+          let image = new Image()
+          image.src = imgData
+          image.onload = () => {
+            image.width = 1080
+            image.height = 1960
+            let data = getBase64Image(image);
+            that.$store.state.image = data
+            that.$router.replace({name: 'image'})
+          }
           // imgData = imgData.replace(_fixType(type),'image/octet-stream');
           // let filename = "UUSound" + '.' + type;
           // that.saveFile(imgData,filename);
