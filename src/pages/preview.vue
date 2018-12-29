@@ -7,7 +7,7 @@
     <el-main>
       <div style="height: 53%; width: 100%;"></div>
       <el-row v-if="form.to" class="">
-        <el-col :span="7" :offset="6">
+        <el-col :span="7" :offset="4">
           <span class="label-content">祝 {{form.to}}</span>
         </el-col>
       </el-row>

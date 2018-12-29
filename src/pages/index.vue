@@ -1,8 +1,10 @@
 <template>
   <el-container class="canvas">
-    <transition name="el-fade-in-linear">
       <div v-show="videoDisplay" class="transition-box">
-        <video preload="auto" id="video" src="http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4" webkit-playsinline='true' playsinline='true' x-webkit-airplay='true' x5-video-player-type='h5' x5-video-player-fullscreen='true' x5-video-ignore-metadata='true'  width='100%' height='100%' style="object-fit: fill;"></video>
+        <video preload="auto" id="video" src="http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4" webkit-playsinline='true' playsinline='true' x-webkit-airplay='true' x5-video-player-type='h5' x5-playsinline="true" x5-video-player-fullscreen='true' x5-video-ignore-metadata='true'  width='100%' height='100%' style="object-fit: fill;"></video>
+        <audio id="music" src="http://m.chint.com/minisite/c-world/2019Newyear/music.mp3">
+          您的浏览器不支持 audio 标签。
+        </audio>
         <div v-if="buttonDisplay" class="play" @click="play()"></div>
       </div>
     </transition>
@@ -12,19 +14,19 @@
       </div>
       <el-row>
         <el-col :span="2" :offset="6">
-          <span class="label">祝</span>
+          <span class="label">祝：</span>
         </el-col>
         <el-col :span="5">
           <el-input class="el-input-transparent" :maxlength="6" v-model="form.to" placeholder="姓名"></el-input>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12" :offset="6">
+        <el-col :span="10" :offset="8">
           <el-input class="el-input-transparent" :maxlength="10" v-model="form.inputA" placeholder="祝福语"></el-input>
         </el-col>
       </el-row>
       <el-row v-if="false">
-        <el-col :span="12" :offset="6">
+        <el-col :span="10" :offset="8">
           <el-input class="el-input-transparent" :maxlength="10" v-model="form.inputB" placeholder="祝福语"></el-input>
         </el-col>
       </el-row>
@@ -71,27 +73,33 @@
         // that.videoDisplay = true
 
         let video = document.getElementById('video');
+        let music = document.getElementById('music')
 
         let ua = navigator.userAgent
         //使用事件监听方式捕捉事件
         video.addEventListener("loaded", function(){
           if (ua.indexOf("iPhone") > 0) {
             video.play()
+            music.play()
             that.buttonDisplay = false
           } else {
             video.play()
+            music.play()
           }
         }, false);
         document.addEventListener("WeixinJSBridgeReady", function () {
           if (ua.indexOf("iPhone") > 0) {
             video.play()
+            music.play()
             that.buttonDisplay = false
           } else {
             video.play()
+            music.play()
           }
         }, false);
         //使用事件监听方式捕捉事件
         video.addEventListener("ended", function(){
+          music.pause()
           that.videoDisplay = false
           that.formDisplay = true
         }, false);
@@ -114,8 +122,10 @@
     methods: {
       play() {
         let video = document.getElementById('video');
-        video.play()
+        let music = document.getElementById('music')
         this.buttonDisplay = false
+        video.play()
+        music.play()
       },
       preview () {
         if (!this.form.from || (!this.form.inputA && !this.form.inputB) || !this.form.to) {
