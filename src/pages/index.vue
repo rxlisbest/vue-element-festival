@@ -43,17 +43,9 @@
 </template>
 
 <script>
-  import {
-    Container
-  } from 'element-ui'
-  import VueDPlayer from 'vue-dplayer'
-  import html2canvas from 'html2canvas';
-
   export default {
     name: 'index',
     components: {
-      Container,
-      'd-player': VueDPlayer
     },
     data () {
       return {
@@ -75,37 +67,45 @@
     },
     mounted () {
       let that = this
-      that.videoDisplay = true
+      if (Object.keys(this.$store.state.bless).length == 0) {
+        // that.videoDisplay = true
 
-      let video = document.getElementById('video');
+        let video = document.getElementById('video');
 
-      let ua = navigator.userAgent
-      //使用事件监听方式捕捉事件
-      video.addEventListener("loaded", function(){
-        if (ua.indexOf("iPhone") > 0) {
-          video.play()
-        } else {
-          video.play()
-        }
-      }, false);
-      document.addEventListener("WeixinJSBridgeReady", function () {
-        if (ua.indexOf("iPhone") > 0) {
-          video.play()
-        } else {
-          video.play()
-        }
-      }, false);
-      //使用事件监听方式捕捉事件
-      video.addEventListener("ended", function(){
-        that.videoDisplay = false
-        that.formDisplay = true
-      }, false);
+        let ua = navigator.userAgent
+        //使用事件监听方式捕捉事件
+        video.addEventListener("loaded", function(){
+          if (ua.indexOf("iPhone") > 0) {
+            video.play()
+            that.buttonDisplay = false
+          } else {
+            video.play()
+          }
+        }, false);
+        document.addEventListener("WeixinJSBridgeReady", function () {
+          if (ua.indexOf("iPhone") > 0) {
+            video.play()
+            that.buttonDisplay = false
+          } else {
+            video.play()
+          }
+        }, false);
+        //使用事件监听方式捕捉事件
+        video.addEventListener("ended", function(){
+          that.videoDisplay = false
+          that.formDisplay = true
+        }, false);
+      }
     },
     created () {
       if (Object.keys(this.$store.state.bless).length == 0) {
         // this.$router.push({name: 'index'})
+        this.videoDisplay = true
+        this.formDisplay = false
       } else {
         this.form = this.$store.state.bless
+        this.videoDisplay = false
+        this.formDisplay = true
       }
       // this.videoDisplay = true
       // this.videoDisplay = false
