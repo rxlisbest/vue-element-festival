@@ -2,10 +2,7 @@
   <el-container class="canvas">
     <transition name="el-fade-in-linear">
       <div v-show="videoDisplay" class="transition-box">
-        <video id="video" autoplay x5-playsinline="true" webkit-playsinline="true" playsinline="true">
-          <source src="http://pkebexqkn.bkt.clouddn.com/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.mp4" type="video/mp4">
-          您的浏览器不支持 video 标签。
-        </video>
+        <video preload="auto" id="video" src="http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4?t=1" webkit-playsinline='true' playsinline='true' x-webkit-airplay='true' x5-video-player-type='h5' x5-video-player-fullscreen='true' x5-video-ignore-metadata='true'  width='100%' height='100%' style="object-fit: fill;"></video>
       </div>
     </transition>
     <el-main v-if="formDisplay">
@@ -66,7 +63,7 @@
           from: ''
         },
         videoDisplay: false,
-        formDisplay: false,
+        formDisplay: true,
         video: {
          url: 'http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4',
          pic: '',
@@ -75,23 +72,35 @@
       }
     },
     mounted () {
-      let that = this
-      that.videoDisplay = true
+      // let that = this
+      // that.videoDisplay = true
 
-      let video = document.getElementById('video');
+      // let video = document.getElementById('video');
 
-      //使用事件监听方式捕捉事件
-      video.addEventListener("loaded", function(){
-        video.play()
-      }, false);
-      document.addEventListener("WeixinJSBridgeReady", function () {
-        video.play()
-      }, false);
-      //使用事件监听方式捕捉事件
-      video.addEventListener("ended", function(){
-        that.videoDisplay = false
-        that.formDisplay = true
-      }, false);
+      // let ua = navigator.userAgent
+      // console.log(ua)
+      // //使用事件监听方式捕捉事件
+      // video.addEventListener("loaded", function(){
+      //   video.controls = false
+      //   if (ua.indexOf("iPhone") > 0) {
+      //     video.play()
+      //   } else {
+      //     video.play()
+      //   }
+      // }, false);
+      // document.addEventListener("WeixinJSBridgeReady", function () {
+      //   video.controls = false
+      //   if (ua.indexOf("iPhone") > 0) {
+      //     video.play()
+      //   } else {
+      //     video.play()
+      //   }
+      // }, false);
+      // //使用事件监听方式捕捉事件
+      // video.addEventListener("ended", function(){
+      //   that.videoDisplay = false
+      //   that.formDisplay = true
+      // }, false);
     },
     created () {
       if (Object.keys(this.$store.state.bless).length == 0) {
@@ -99,13 +108,13 @@
       } else {
         this.form = this.$store.state.bless
       }
-      this.videoDisplay = true
+      // this.videoDisplay = true
       // this.videoDisplay = false
       // this.formDisplay = true
     },
     methods: {
       play() {
-        console.log('play callback')
+        // console.log('play callback')
       },
       preview () {
         if (!this.form.from || (!this.form.inputA && !this.form.inputB) || !this.form.to) {

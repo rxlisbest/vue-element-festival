@@ -1,6 +1,6 @@
 <template>
   <el-container class="canvas">
-    <img :src="image">
+    <img :src="image" class="image">
   </el-container>
 </template>
 
@@ -25,6 +25,7 @@
       } else {
         this.image = this.$store.state.image
       }
+      alert("请长按保存图片\n把节日祝福卡片发给朋友们吧")
     },
     methods: {
     }
@@ -32,6 +33,10 @@
 </script>
 
 <style>
+  .image {
+    width: 100%;
+    height: 100%;
+  }
   .el-row-button {
     margin-top: 16px;
   }
