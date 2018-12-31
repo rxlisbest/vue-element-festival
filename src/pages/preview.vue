@@ -8,7 +8,7 @@
       <div style="height: 53%; width: 100%;"></div>
       <el-row v-if="form.to" class="">
         <el-col :span="7" :offset="4">
-          <span class="label-content">祝 {{form.to}}</span>
+          <span class="label-content">祝：{{form.to}}</span>
         </el-col>
       </el-row>
       <el-row v-if="form.inputA">
@@ -61,6 +61,7 @@
         imgHeight: 0,
         imgHeight: 0,
         buttonDisplay: true,
+        imageChange: 0
       }
     },
     created () {
@@ -85,8 +86,7 @@
       }
     },
     watch: {
-      buttonDisplay () {
-        console.log(window.devicePixelRatio)
+      imageChange () {
         let that = this
         let canvas = document.querySelector('body');
         html2canvas(canvas, {logging: false, useCORS: true, dpi: 800}).then(function(canvas) {
@@ -120,9 +120,21 @@
           // let filename = "UUSound" + '.' + type;
           // that.saveFile(imgData,filename);
         });
+      },
+      buttonDisplay () {
+        this.showImage()
+        this.imageChange++
       }
     },
     methods: {
+    	showImage() {
+        let that = this
+        that.imgDisplay = false
+        // 得到屏幕尺寸 (内部/外部宽度，内部/外部高度)
+        that.imgWidth = document.body.scrollWidth
+        that.imgHeight = document.body.scrollHeight - 5
+        that.imgDisplay = true
+    	},
       back () {
         this.$router.replace({name: 'index'})
       },
@@ -140,6 +152,8 @@
   .label-content {
     color: #FFFFFF;
     line-height: 0px;
+    font-size: 12px;
+    word-wrap: break-word;
   }
   .el-main {
     font-color: #FFFFFF;
@@ -150,13 +164,12 @@
     padding: 0 0;
     color: #FFFFFF;
     font-color: #FFFFFF;
-    font-size: 16px;
+    font-size: 12px;
   }
   .el-input-transparent {
     border-bottom: 1px solid #dcdfe6;
   }
   .el-row {
-    margin-top: 4px;
   }
   .el-row-button button {
     margin: 4px auto;

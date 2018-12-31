@@ -53,13 +53,12 @@
     padding: 0 0;
     color: #FFFFFF;
     font-color: #FFFFFF;
-    font-size: 16px;
+    font-size: 12px;
   }
   .el-input-transparent {
     border-bottom: 1px solid #dcdfe6;
   }
   .el-row {
-    margin-top: 4px;
   }
   .el-row-button button {
     margin: 4px auto;

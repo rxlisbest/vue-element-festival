@@ -2,9 +2,9 @@
   <el-container class="canvas">
       <div v-show="videoDisplay" class="transition-box">
         <video preload="auto" id="video" src="http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4" webkit-playsinline='true' playsinline='true' x-webkit-airplay='true' x5-video-player-type='h5' x5-playsinline="true" x5-video-player-fullscreen='true' x5-video-ignore-metadata='true'  width='100%' height='100%' style="object-fit: fill;"></video>
-        <audio id="music" src="http://m.chint.com/minisite/c-world/2019Newyear/music.mp3">
+        <<!-- audio id="music" src="http://m.chint.com/minisite/c-world/2019Newyear/music.mp3">
           您的浏览器不支持 audio 标签。
-        </audio>
+        </audio> -->
         <div v-if="buttonDisplay" class="play" @click="play()"></div>
       </div>
     </transition>
@@ -13,7 +13,7 @@
         <!-- <d-player @play="play" ref="player"></d-player> -->
       </div>
       <el-row>
-        <el-col :span="2" :offset="6">
+        <el-col :span="2" :offset="4">
           <span class="label">祝：</span>
         </el-col>
         <el-col :span="5">
@@ -21,12 +21,19 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="10" :offset="8">
-          <el-input class="el-input-transparent" :maxlength="10" v-model="form.inputA" placeholder="祝福语"></el-input>
+        <el-col :span="12" :offset="6">
+          <el-input
+            class="el-input-transparent el-input-transparent-textarea" 
+            type="textarea"
+            :autosize="{ minRows: 1, maxRows: 2}"
+            placeholder="祝福语"
+            maxlength="38"
+            v-model="form.inputA">
+          </el-input>
         </el-col>
       </el-row>
       <el-row v-if="false">
-        <el-col :span="10" :offset="8">
+        <el-col :span="10" :offset="6">
           <el-input class="el-input-transparent" :maxlength="10" v-model="form.inputB" placeholder="祝福语"></el-input>
         </el-col>
       </el-row>
@@ -58,7 +65,7 @@
           from: ''
         },
         videoDisplay: false,
-        formDisplay: false,
+        formDisplay: true,
         buttonDisplay: true,
         video: {
          url: 'http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4',
@@ -67,53 +74,15 @@
         },
       }
     },
-    mounted () {
-      let that = this
-      if (Object.keys(this.$store.state.bless).length == 0) {
-        // that.videoDisplay = true
-
-        let video = document.getElementById('video');
-        let music = document.getElementById('music')
-
-        let ua = navigator.userAgent
-        //使用事件监听方式捕捉事件
-        video.addEventListener("loaded", function(){
-          if (ua.indexOf("iPhone") > 0) {
-            video.play()
-            music.play()
-            that.buttonDisplay = false
-          } else {
-            video.play()
-            music.play()
-          }
-        }, false);
-        document.addEventListener("WeixinJSBridgeReady", function () {
-          if (ua.indexOf("iPhone") > 0) {
-            video.play()
-            music.play()
-            that.buttonDisplay = false
-          } else {
-            video.play()
-            music.play()
-          }
-        }, false);
-        //使用事件监听方式捕捉事件
-        video.addEventListener("ended", function(){
-          music.pause()
-          that.videoDisplay = false
-          that.formDisplay = true
-        }, false);
-      }
-    },
     created () {
       if (Object.keys(this.$store.state.bless).length == 0) {
         // this.$router.push({name: 'index'})
-        this.videoDisplay = true
-        this.formDisplay = false
+        // this.videoDisplay = true
+        // this.formDisplay = false
       } else {
         this.form = this.$store.state.bless
-        this.videoDisplay = false
-        this.formDisplay = true
+        // this.videoDisplay = false
+        // this.formDisplay = true
       }
       // this.videoDisplay = true
       // this.videoDisplay = false
@@ -121,7 +90,7 @@
     },
     methods: {
       play() {
-        let video = document.getElementById('video');
+        // let video = document.getElementById('video');
         let music = document.getElementById('music')
         this.buttonDisplay = false
         video.play()
@@ -132,6 +101,7 @@
           alert('信息未填写完整')
           return false
         }
+        window.scroll(0, 0)
         this.$store.state.bless = this.form
         this.$router.replace({name: 'preview'})
       }
@@ -169,6 +139,7 @@
   .label {
     color: #FFFFFF;
     line-height: 32px;
+    font-size: 12px;
   }
   .el-main {
     font-color: #FFFFFF;
@@ -179,13 +150,25 @@
     padding: 0 0;
     color: #FFFFFF;
     font-color: #FFFFFF;
-    font-size: 16px;
+    font-size: 12px;
+  }
+
+  .el-input-transparent, .el-input-transparent textarea{
+    background-color: transparent;
+    border: 0px solid #dcdfe6;
+    padding: 0 0;
+    color: #FFFFFF;
+    font-color: #FFFFFF;
+    font-size: 12px;
+  }
+  .el-input-transparent-textarea {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
   }
   .el-input-transparent {
     border-bottom: 1px solid #dcdfe6;
   }
   .el-row {
-    margin-top: 4px;
   }
   .el-row-button {
     margin-top: 4px;
