@@ -1,5 +1,6 @@
 <template>
   <el-container class="canvas">
+    <transition name="el-fade-in-linear">
       <div v-show="videoDisplay" class="transition-box">
         <video preload="auto" id="video" src="http://m.chint.com/minisite/c-world/2019Newyear/newyear.mp4" webkit-playsinline='true' playsinline='true' x-webkit-airplay='true' x5-video-player-type='h5' x5-playsinline="true" x5-video-player-fullscreen='true' x5-video-ignore-metadata='true'  width='100%' height='100%' style="object-fit: fill;"></video>
         <<!-- audio id="music" src="http://m.chint.com/minisite/c-world/2019Newyear/music.mp3">
@@ -77,8 +78,8 @@
     created () {
       if (Object.keys(this.$store.state.bless).length == 0) {
         // this.$router.push({name: 'index'})
-        // this.videoDisplay = true
-        // this.formDisplay = false
+        this.videoDisplay = true
+        this.formDisplay = false
       } else {
         this.form = this.$store.state.bless
         // this.videoDisplay = false
@@ -88,13 +89,38 @@
       // this.videoDisplay = false
       // this.formDisplay = true
     },
+    mounted () {
+      let video = document.getElementById('video')
+      let ua = navigator.userAgent
+      console.log(music)
+
+      document.addEventListener("WeixinJSBridgeReady", function () {
+        if (ua.indexOf("iPhone") > 0) {
+          video.play()
+        } else {
+          video.play()
+        }
+      }, false);
+
+      video.addEventListener("loaded", function(){
+        if (ua.indexOf("iPhone") > 0) {
+          video.play()
+        } else {
+          video.play()
+        }
+      }, false);
+
+      video.addEventListener("end", function(){
+        this.videoDisplay = false
+        this.formDisplay = true
+      }, false);
+    },
     methods: {
       play() {
         // let video = document.getElementById('video');
         let music = document.getElementById('music')
         this.buttonDisplay = false
         video.play()
-        music.play()
       },
       preview () {
         if (!this.form.from || (!this.form.inputA && !this.form.inputB) || !this.form.to) {
