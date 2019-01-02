@@ -90,35 +90,35 @@
       // this.formDisplay = true
     },
     mounted () {
+      let that = this
       let video = document.getElementById('video')
       let ua = navigator.userAgent
       console.log(music)
 
       document.addEventListener("WeixinJSBridgeReady", function () {
         if (ua.indexOf("iPhone") > 0) {
-          video.play()
+          that.play()
         } else {
-          video.play()
+          that.play()
         }
       }, false);
 
       video.addEventListener("loaded", function(){
         if (ua.indexOf("iPhone") > 0) {
-          video.play()
+          that.play()
         } else {
-          video.play()
+          that.play()
         }
       }, false);
 
-      video.addEventListener("end", function(){
-        this.videoDisplay = false
-        this.formDisplay = true
+      video.addEventListener("ended", function(){
+        that.videoDisplay = false
+        that.formDisplay = true
       }, false);
     },
     methods: {
       play() {
-        // let video = document.getElementById('video');
-        let music = document.getElementById('music')
+        let video = document.getElementById('video');
         this.buttonDisplay = false
         video.play()
       },
